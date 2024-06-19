@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout}">
+<head>
+    <title>List of Employees</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<section layout:fragment="content">
+<div class="container mt-5">
+    <h2 class="mb-4">Thong Tin Nhan Vien</h2>
+
+    <a class="btn btn-success mb-3" sec:authorize="hasAuthority('ADMIN')" th:href="@{/nhanvien/add}">THÊM NHÂN VIÊN</a>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Ma Nhan Vien</th>
+            <th>Ten Nhan Vien</th>
+            <th>Gioi Tinh</th>
+            <th>Noi Sinh</th>
+            <th>Ten Phong </th>
+            <th>Luong</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="nhanvien : ${nhanvien}">
+            <td th:text="${nhanvien.maNV}"></td>
+            <td th:text="${nhanvien.tenNV}"></td>
+            <td>
+                <img th:src="@{nhanvien.phai} == 'NU' ? '/uploads/woman.png' : '/uploads/man.png'" width="30" height="30">
+            </td>
+            <td th:text="${nhanvien.noiSinh}"></td>
+            <td th:text="${nhanvien.phongBan.tenPhong}"></td>
+            <td th:text="${nhanvien.luong}"></td>
+            <td>
+                <div sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{/nhanvien/edit/{id}(id=${nhanvien.maNV})}" class="btn btn-primary btn-sm">Edit</a>
+                <a th:href="@{/nhanvien/delete/{id}(id=${nhanvien.maNV})}" class="btn btn-danger btn-sm">Delete</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </section>
+</body>
+</html>
